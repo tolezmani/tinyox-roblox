@@ -17,8 +17,8 @@ Method (stdlib only, fully deterministic — no clock, no randomness, no network
 
 Backtest (local scorer verified exact: reproduces the official starter score
 -43.512039 on the practice window):
-  practice window (8-10 Nov, 10 reads): -33.22  (starter -43.51, house model -37.2)
-  kit-tail split (train <= 5 Nov, test 5-7 Nov): -43.89 (starter -55.85)
+  practice window (8-10 Nov, 10 reads): -32.98  (v1 -33.37, starter -43.51, house -37.2)
+  kit-tail split (train <= 5 Nov, test 5-7 Nov, 11 reads): -42.81 (v1 -44.51, starter -55.85)
 
 Reads $MAKEFUN_INPUT_DIR (default /input), writes $MAKEFUN_OUTPUT_DIR (default
 /output) / forecast.json: exactly {"probabilities": [...], "top10": [...]}.
@@ -28,12 +28,12 @@ import math
 import os
 from datetime import datetime
 
-# --- tuned constants (from backtests on the dev kit + practice window) ---
-G_MULT = 1.25        # growth-shift multiplier
+# --- tuned constants (v2: coordinate-tuned on practice + kit-tail splits, 2026-11-12) ---
+G_MULT = 2.5         # growth-shift multiplier
 SD_MULT = 0.8        # destination-rank sd multiplier
-SHIFT_CAP = 20.0     # max rank shift from the growth feature
-MIN_P = 0.002        # smallest probability written out
-UNNAMED_MULT = 1.0   # multiplier on the empirical unnamed share
+SHIFT_CAP = 25.0     # max rank shift from the growth feature
+MIN_P = 0.01         # smallest probability written out
+UNNAMED_MULT = 1.25  # multiplier on the empirical unnamed share
 
 RANK_BUCKETS = [(1, 1), (2, 2), (3, 3), (4, 5), (6, 8), (9, 10),
                 (11, 15), (16, 20), (21, 30), (31, 50), (51, 200)]
